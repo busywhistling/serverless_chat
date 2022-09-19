@@ -1,0 +1,101 @@
+.chatbox {
+	$chatbotSize: 600px;
+	$messageMaxWidth: calc(0.7 * $chatbotSize);
+
+	width: $chatbotSize;
+	background-color: rgb(232, 157, 157);
+
+	.header {
+		background-color: rgb(255, 173, 173);
+		border-radius: 20px 20px 0 0;
+		height: 4rem;
+		padding-left: 1rem;
+		padding-top: 1rem;
+		text-align: left;
+		font-size: x-large;
+	}
+
+	border-radius: 20px;
+
+	.body {
+		overflow: auto;
+		height: 600px;
+		.messages {
+			.message {
+				margin: 0.5rem;
+				// background-color: rgb(109, 19, 19);
+				display: flex;
+			}
+
+			.received {
+				text-align: left;
+			}
+
+			.sent {
+				text-align: right;
+				.messageContent {
+					margin-left: auto;
+				}
+			}
+
+			.messageAvatar {
+				height: 2rem;
+				width: 2rem;
+				background-color: azure;
+				border-radius: 50%;
+				margin-top: 0.2rem;
+				margin-right: 0.3rem;
+				display: grid;
+				position: center;
+				justify-items: center;
+				align-items: center;
+			}
+
+			.messageContent {
+				max-width: $messageMaxWidth;
+				background-color: azure;
+				border-radius: 15px;
+				padding: 10px;
+			}
+
+			.time {
+				font-size: small;
+				color: grey;
+			}
+		}
+	}
+	.composebox {
+		$messageBoxSize: 5rem;
+		height: $messageBoxSize;
+		background-color: rgb(255, 173, 173);
+		border-radius: 0 0 20px 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.messageinput {
+			height: 98%;
+			width: 98%;
+			border-radius: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			textarea {
+				height: 4rem;
+				width: 90%;
+				padding: 10px 1rem;
+				border-radius: 30px;
+				resize: none;
+			}
+
+			button {
+				height: 4rem;
+				width: 4rem;
+				margin: 10px;
+				border-radius: 50%;
+				text-align: center;
+			}
+		}
+	}
+}
