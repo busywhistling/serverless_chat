@@ -1,30 +1,73 @@
 .chatbox {
-	$chatbotSize: 600px;
-	$messageMaxWidth: calc(0.7 * $chatbotSize);
+	$chatboxHeight: 80vh;
+	$chatboxWidth: 30vw;
+	$headerHeight: 4rem;
+	$composeboxHeight: 4rem;
+	$messageMaxWidth: calc(0.7 * $chatboxWidth);
+	$baseColor: #323644;
+	$accentColor: #272a37;
+	$sentMessageColor: #1d90f5;
 
-	width: $chatbotSize;
-	background-color: rgb(232, 157, 157);
+	height: $chatboxHeight;
+	width: $chatboxWidth;
+	background-color: #3a3a3c;
+	// background-color: rgb(232, 157, 157);
+	border-radius: 20px;
+
+	box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+		0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+		0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+
+	// box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 
 	.header {
-		background-color: rgb(255, 173, 173);
+		// background-color: rgb(255, 173, 173);
+		background-color: $accentColor;
+		color: white;
 		border-radius: 20px 20px 0 0;
-		height: 4rem;
+		height: $headerHeight;
 		padding-left: 1rem;
 		padding-top: 1rem;
 		text-align: left;
 		font-size: x-large;
 	}
 
-	border-radius: 20px;
-
 	.body {
 		overflow: auto;
-		height: 600px;
+		height: calc($chatboxHeight - $composeboxHeight - $headerHeight);
 		.messages {
 			.message {
 				margin: 0.5rem;
 				// background-color: rgb(109, 19, 19);
 				display: flex;
+
+				.messageAvatar {
+					height: 2rem;
+					width: 2rem;
+					background-color: azure;
+					border-radius: 50%;
+					margin-top: 0.2rem;
+					margin-right: 0.3rem;
+					display: grid;
+					position: center;
+					justify-items: center;
+					align-items: center;
+				}
+
+				.messageContent {
+					max-width: $messageMaxWidth;
+					background-color: azure;
+					border-radius: 12px;
+					padding: 0.5rem;
+					font-size: small;
+					line-height: 1rem;
+
+					.time {
+						font-size: smaller;
+						line-height: 1rem;
+						color: grey;
+					}
+				}
 			}
 
 			.received {
@@ -35,39 +78,22 @@
 				text-align: right;
 				.messageContent {
 					margin-left: auto;
+					background-color: $sentMessageColor;
+					color: white;
+					.time {
+						color: rgb(226, 226, 226) !important;
+					}
 				}
-			}
-
-			.messageAvatar {
-				height: 2rem;
-				width: 2rem;
-				background-color: azure;
-				border-radius: 50%;
-				margin-top: 0.2rem;
-				margin-right: 0.3rem;
-				display: grid;
-				position: center;
-				justify-items: center;
-				align-items: center;
-			}
-
-			.messageContent {
-				max-width: $messageMaxWidth;
-				background-color: azure;
-				border-radius: 15px;
-				padding: 10px;
-			}
-
-			.time {
-				font-size: small;
-				color: grey;
 			}
 		}
 	}
 	.composebox {
-		$messageBoxSize: 5rem;
+		$messageBoxSize: 4rem;
+		$buttonSize: calc(0.8 * $messageBoxSize);
+
 		height: $messageBoxSize;
-		background-color: rgb(255, 173, 173);
+		// background-color: rgb(255, 173, 173);
+		background-color: $accentColor;
 		border-radius: 0 0 20px 20px;
 		display: flex;
 		align-items: center;
@@ -82,18 +108,24 @@
 			justify-content: space-between;
 
 			textarea {
-				height: 4rem;
+				height: 3rem;
 				width: 90%;
-				padding: 10px 1rem;
-				border-radius: 30px;
+				margin: 0.2rem;
+				padding: 0.5rem;
+				background-color: grey;
+				color: white;
+				border: 0;
+				border-radius: 1rem;
 				resize: none;
+				font-family: inherit;
 			}
 
 			button {
-				height: 4rem;
-				width: 4rem;
-				margin: 10px;
-				border-radius: 50%;
+				height: $buttonSize;
+				width: $buttonSize;
+				margin: 0.2rem;
+				border-radius: 1rem;
+				border: 0;
 				text-align: center;
 			}
 		}

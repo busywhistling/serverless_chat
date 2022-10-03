@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./Chatbox.scss";
 
 type Message = {
@@ -13,13 +13,15 @@ interface ChatboxProps {
 	room: string;
 	messages: Message[];
 	sendToSocket: (msg: Message) => void;
+	isRoomJoined: boolean;
 }
 
-const Chatbox = ({ user, room, messages, sendToSocket }: ChatboxProps) => {
+const Chatbox = ({ user, room, messages, sendToSocket, isRoomJoined }: ChatboxProps) => {
 	const participants = [...new Set(messages.map(msg => msg.author).concat(user))]; // get unique participants, including user (before any message has been sent)
 
 	const [draft, setDraft] = useState("");
 
+	const composeBoxRef = useRef<null | HTMLTextAreaElement>(null);
 	const sendMessage = () => {
 		if (draft !== "") {
 			const msg = {
@@ -29,18 +31,36 @@ const Chatbox = ({ user, room, messages, sendToSocket }: ChatboxProps) => {
 				timestamp: new Date().toString(),
 			};
 			sendToSocket(msg);
+			setDraft("");
+			console.log(composeBoxRef.current?.value);
+			if (typeof composeBoxRef.current?.value == 'string') {
+				composeBoxRef.current.value = "";
+			}
 		}
 	};
+
+
+	console.log()
+
+	const messagesEndRef = useRef<null | HTMLDivElement>(null);
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
 
 	return (
 		<div className="chatbox">
 			<div className="header">
 				&#128172; {participants.join(", ")} {room && `(${room})`}
 			</div>
-
 			<div className="body">
 				<div className="messages">
 					{messages.map(msg => (
+						// console.log(msg);
+						// return 
+						msg.author &&
 						<div
 							key={new Date(msg.timestamp).toString()}
 							className={`message ${msg.author === user ? "sent" : "received"}`}>
@@ -57,6 +77,7 @@ const Chatbox = ({ user, room, messages, sendToSocket }: ChatboxProps) => {
 							</div>
 						</div>
 					))}
+					<div ref={messagesEndRef} />
 				</div>
 			</div>
 			<div className="composebox">
@@ -64,8 +85,10 @@ const Chatbox = ({ user, room, messages, sendToSocket }: ChatboxProps) => {
 					<textarea
 						id="messageinput"
 						name="messageinput"
-						placeholder="Write your message..."
-						onChange={e => setDraft(e.target.value)}></textarea>
+						placeholder="Type something..."
+						ref={composeBoxRef}
+						// value={draft}
+						onBlur={e => setDraft(e.target.value)}></textarea>
 					<button onClick={() => sendMessage()}>Send</button>
 				</div>
 			</div>

@@ -2,9 +2,6 @@ import { useState } from "react";
 import "@/styles/App.scss";
 import { Chatbox, Form } from "@/components/";
 
-//import io from "socket.io-client";
-// const socket = io("ws://localhost:6001");
-
 let websocket: WebSocket;
 
 type Message = {
@@ -17,29 +14,28 @@ type Message = {
 function App() {
 	const [user, setUser] = useState("");
 	const [room, setRoom] = useState("");
+	const [loginTime, setLoginTime] = useState(0);
 	const [messages, setMessages] = useState([] as Message[]);
 	const [dummy, setDummy] = useState(0);
+	const [isRoomJoined, setIsRoomJoined] = useState(false);
 
 	const createChatroom = () => {
 		if (room === "" || user === "") {
 			return;
 		}
+		console.log("Function being run")
 		websocket = new WebSocket(
 			`wss://edge-chat-demo.busywhistling.workers.dev/api/room/${room}/websocket`,
 		);
-		// socket.emit("join_room", room);
+		setDummy(dummy + 1);
+
 		websocket.onopen = () => websocket.send(JSON.stringify({ name: user }));
 		console.log(`${user} has joined ${room}`);
 	};
 
 	const sendToSocket = (msg: Message) => {
 		websocket.send(JSON.stringify({ message: msg.message }));
-
-		// socket.emit("send_message", msg);
-		// setMessages(messages.concat(msg));
 		setDummy(dummy + 1);
-
-		console.log(messages);
 	};
 
 	if (websocket !== undefined) {
@@ -60,14 +56,11 @@ function App() {
 			);
 		};
 	}
-	// socket.on("receive_message", (message: Message) => {
-	// 	setMessages(messages.concat(message));
-	// });
 
 	return (
 		<main>
-			<Form setUser={setUser} setRoom={setRoom} createChatroom={createChatroom} />
-			<Chatbox user={user} room={room} messages={messages} sendToSocket={sendToSocket} />
+			<Form setUser={setUser} setRoom={setRoom} createChatroom={createChatroom} setIsRoomJoined={setIsRoomJoined} />
+			<Chatbox user={user} room={room} messages={messages} sendToSocket={sendToSocket} isRoomJoined={isRoomJoined} />
 		</main>
 	);
 }

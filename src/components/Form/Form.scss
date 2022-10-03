@@ -1,4 +1,71 @@
-.form {
-	width: 20rem;
-	// margin-bottom: 2rem;
+.credentials {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40vw;
+
+	fieldset {
+		width: 90%;
+		height: 50vh;
+		border: 0;
+
+		text-align: left;
+
+		// margin-bottom: 2rem;
+
+		legend {
+			font-size: 2rem;
+			margin-bottom: 2rem;
+		}
+
+		.inputbox {
+			font-size: 1.2rem;
+			// padding: 1rem 0;
+
+			.label {
+				width: 100%;
+			}
+
+			input {
+				height: 3rem;
+				width: 100%;
+				padding: 0.2rem;
+				border: 0.2rem solid black;
+				border-radius: 10px;
+				font-size: 1.5rem;
+			}
+
+			.comment {
+				margin-top: 0.2rem;
+				font-size: small;
+			}
+		}
+		.submissionDialog {
+			button {
+				height: 3rem;
+				font-size: 1.5rem;
+				padding: 0 1rem;
+				// display: inline-block;
+				// padding: 0.35em 1.2em;
+				// border: 0.1em solid #ffffff;
+				// margin: 0 0.3em 0.3em 0;
+				border-radius: 1rem;
+				// box-sizing: border-box;
+				// text-decoration: none;
+				// font-family: "Roboto", sans-serif;
+				// font-weight: 300;
+				// color: #ffffff;
+				transition: all 0.2s;
+			}
+			button:hover {
+				color: #000000;
+				background-color: #ffffff;
+			}
+		}
+		.rules {
+			margin: 1rem;
+			font-size: small;
+			line-height: 1rem;
+		}
+	}
 }
