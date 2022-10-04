@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "@/styles/App.scss";
 import { Chatbox, Form } from "@/components/";
 

@@ -1,5 +1,5 @@
 import "./Form.scss";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface FormProps {
@@ -59,7 +59,7 @@ const Form = ({ setUser, setRoom, createChatroom }: FormProps) => {
 					/>
 					<div className="comment">
 						{draftRoom ?
-							<div>Oooh, "{draftRoom}" is one of the coolest rooms!</div> : <br />}
+							<div>Oooh, {draftRoom} is one of the coolest rooms!</div> : <br />}
 					</div>
 				</div>
 				<br />
