@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "@/styles/App.scss";
 import { Chatbox, Form } from "@/components/";
 
-// const WEBSOCKET_URL = "edge-chat-demo.busywhistling.workers.dev"
+// const WEBSOCKET_URL = "chat.busywhistling.workers.dev"
 const WEBSOCKET_URL = "localhost:8787"
 let websocket: WebSocket;
 
