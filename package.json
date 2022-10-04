@@ -11,8 +11,8 @@
 		"test": "jest --passWithNoTests --maxWorkers=1; playwright test",
 		"lint": "eslint . --ext .ts,.tsx",
 		"prepare": "husky install",
-		"start-worker": "wrangler dev",
-		"deploy-worker": "wrangler publish",
+		"worker-onlinedev": "wrangler dev",
+		"worker-deploy": "wrangler publish",
 		"worker": "miniflare --watch --debug --no-cf-fetch --https --modules src/worker.js"
 	},
 	"dependencies": {

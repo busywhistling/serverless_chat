@@ -12,15 +12,12 @@ interface ChatboxProps {
 	participants: string[];
 	messages: Message[];
 	sendToSocket: (msg: Message) => void;
-	msgCount: number;
 }
 
-const Chatbox = ({ user, participants, messages, sendToSocket, msgCount }: ChatboxProps) => {
-	// const participants = [...new Set(messages.map(msg => msg.author).concat(user))]; // get unique participants, including user (before any message has been sent)
-
+const Chatbox = ({ user, participants, messages, sendToSocket }: ChatboxProps) => {
 	const [draft, setDraft] = useState("");
-
 	const composeBoxRef = useRef<null | HTMLTextAreaElement>(null);
+
 	const sendMessage = () => {
 		if (draft !== "") {
 			const msg = {
@@ -84,7 +81,6 @@ const Chatbox = ({ user, participants, messages, sendToSocket, msgCount }: Chatb
 					<button onClick={() => sendMessage()}>Send</button>
 				</div>
 			</div>
-			<div className="dummy">{msgCount}</div>
 		</div>
 	);
 };

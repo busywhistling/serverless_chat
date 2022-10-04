@@ -1,3 +1,4 @@
+// Modified from https://github.com/cloudflare/workers-chat-demo (BSD)
 async function handleErrors(request, func) {
 	try {
 		return await func();

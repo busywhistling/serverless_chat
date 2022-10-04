@@ -20,7 +20,7 @@ const Form = ({ setUser, setRoom, createChatroom }: FormProps) => {
 	}
 
 	useEffect(() => {
-		createChatroom();
+		isSubmitted && createChatroom();
 	}, [isSubmitted])
 
 	return (
