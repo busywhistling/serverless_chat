@@ -17,7 +17,7 @@ function App() {
 	const [room, setRoom] = useState("");
 	const [messages, setMessages] = useState([] as Message[]);
 	const [participants, setParticipants] = useState([] as string[])
-	const [msgContent, setMsgContent] = useState(0);
+	const [msgCount, setMsgCount] = useState(0);
 
 	const createChatroom = () => {
 		if (room === "" || user === "") {
@@ -27,14 +27,14 @@ function App() {
 		if (websocket) {
 			websocket.onopen = () => websocket && websocket.send(JSON.stringify({ user: user, joined: room }));
 			// initially announce { user: User, joined: Room } to websocket
-			setMsgContent(msgContent => msgContent + 1); // to invoke a re-render of the App component 
+			setMsgCount(msgCount => msgCount + 1); // to invoke a re-render of the App component 
 		}
 	};
 
 	const sendToSocket = (msg: Message) => {
 		if (websocket) {
 			websocket.send(JSON.stringify({ message: msg.message }));
-			setMsgContent(msgContent => msgContent + 1); // to invoke a re-render of the App component 
+			setMsgCount(msgCount => msgCount + 1); // to invoke a re-render of the App component 
 		}
 	};
 
@@ -57,7 +57,7 @@ function App() {
 						timestamp: new Date(msgData.timestamp).toString(),
 					}]);
 			}
-			setMsgContent(msgContent => msgContent + 1); // to invoke a re-render of the App component 
+			setMsgCount(msgCount => msgCount + 1); // to invoke a re-render of the App component 
 		};
 	}
 
