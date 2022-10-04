@@ -6,16 +6,14 @@ interface FormProps {
 	setUser: (u: string) => void;
 	setRoom: (r: string) => void;
 	createChatroom: () => void;
-	setIsRoomJoined: (b: boolean) => void;
 }
 
-const Form = ({ setUser, setRoom, createChatroom, setIsRoomJoined }: FormProps) => {
+const Form = ({ setUser, setRoom, createChatroom }: FormProps) => {
 	const [draftUser, setDraftUser] = useState("");
 	const [draftRoom, setDraftRoom] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const setDetails = () => {
-		console.log("Submit button pressed")
 		setUser(draftUser);
 		setRoom(draftRoom);
 		setIsSubmitted(true);

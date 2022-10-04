@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# miniflare
+.mf
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "@/styles/App.scss";
 import { Chatbox, Form } from "@/components/";
 
+// const WEBSOCKET_URL = "edge-chat-demo.busywhistling.workers.dev"
+const WEBSOCKET_URL = "localhost:8787"
 let websocket: WebSocket;
 
 type Message = {
-	room: string;
 	author: string;
 	message: string;
 	timestamp: string;
@@ -14,53 +15,61 @@ type Message = {
 function App() {
 	const [user, setUser] = useState("");
 	const [room, setRoom] = useState("");
-	const [loginTime, setLoginTime] = useState(0);
+	// const [websocket, setWebsocket] = useState(undefined as undefined | WebSocket);
 	const [messages, setMessages] = useState([] as Message[]);
-	const [dummy, setDummy] = useState(0);
-	const [isRoomJoined, setIsRoomJoined] = useState(false);
+	const [participants, setParticipants] = useState([] as string[])
+	const [msgCount, setMsgCount] = useState(0);
 
 	const createChatroom = () => {
 		if (room === "" || user === "") {
 			return;
 		}
-		console.log("Function being run")
-		websocket = new WebSocket(
-			`wss://edge-chat-demo.busywhistling.workers.dev/api/room/${room}/websocket`,
-		);
-		setDummy(dummy + 1);
-
-		websocket.onopen = () => websocket.send(JSON.stringify({ name: user }));
-		console.log(`${user} has joined ${room}`);
+		websocket = new WebSocket(`wss://${WEBSOCKET_URL}/api/room/${room}/websocket`);
+		if (websocket) {
+			websocket.onopen = () => websocket.send(JSON.stringify({ user: user, joined: room }));
+			// initially announce { user: User, joined: Room } to websocket
+			setMsgCount(msgCount + 1);
+		}
 	};
 
 	const sendToSocket = (msg: Message) => {
-		websocket.send(JSON.stringify({ message: msg.message }));
-		setDummy(dummy + 1);
+		if (websocket) {
+			websocket.send(JSON.stringify({ message: msg.message }));
+			setMsgCount(msgCount + 1);
+		}
 	};
 
-	if (websocket !== undefined) {
-		websocket.onmessage = msg => {
-			// console.log(JSON.parse(msg.data));
-			console.log(msg.data);
-			const info = JSON.parse(msg.data);
-
-			if (info.joined) return;
-
-			setMessages(
-				messages.concat({
-					room: room,
-					author: info.name,
-					message: info.message,
-					timestamp: new Date(info.timestamp).toString(),
-				}),
-			);
-		};
-	}
+	useEffect(() => {
+		if (websocket) {
+			websocket.onmessage = msg => {
+				console.log(msg.data);
+				setMsgCount(msgCount + 1);
+				const msgData = JSON.parse(msg.data);
+				// msgData is of form {joined:user} or {quit:user} or {name:user, message:msg, timestamp:time}
+				if (msgData.joined) {
+					setParticipants(participants.concat(msgData.joined));
+				} else if (msgData.quit) {
+					setParticipants(participants.filter(user => user !== msgData.quit));
+				} else if (msgData.ready) {
+					return;
+				} else {
+					setMessages(
+						messages.concat({
+							author: msgData.name,
+							message: msgData.message,
+							timestamp: new Date(msgData.timestamp).toString(),
+						}),
+					);
+				}
+			};
+		}
+	});
 
 	return (
 		<main>
-			<Form setUser={setUser} setRoom={setRoom} createChatroom={createChatroom} setIsRoomJoined={setIsRoomJoined} />
-			<Chatbox user={user} room={room} messages={messages} sendToSocket={sendToSocket} isRoomJoined={isRoomJoined} />
+			<Form setUser={setUser} setRoom={setRoom} createChatroom={createChatroom} />
+			<Chatbox user={user} participants={participants} messages={messages} sendToSocket={sendToSocket} msgCount={msgCount} />
+			<div className="dummy">{msgCount}</div>
 		</main>
 	);
 }
