@@ -37,9 +37,6 @@ const Form = ({ setUser, setRoom, createChatroom }: FormProps) => {
 						placeholder="E.g., John"
 						readOnly={isSubmitted}
 						required
-						// onChange={e => {
-						// 	setDraftUser(e.target.value);
-						// }}
 						onBlur={e => setDraftUser(e.target.value)}
 					/>
 					<div className="comment">

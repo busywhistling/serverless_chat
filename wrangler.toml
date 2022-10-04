@@ -1,10 +1,10 @@
 name = "chat"
-compatibility_date = "2022-09-16"
+compatibility_date = "2022-10-01"
 
 # Add your account ID here
 # account_id = ""
 
-main = "src/workers/index.ts"
+main = "src/worker.js"
 
 [durable_objects]
 bindings = [

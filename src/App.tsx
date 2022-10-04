@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "@/styles/App.scss";
 import { Chatbox, Form } from "@/components/";
 
-// const WEBSOCKET_URL = "chat.busywhistling.workers.dev"
-const WEBSOCKET_URL = "localhost:8787"
+const WEBSOCKET_URL = "chat.busywhistling.workers.dev"
+// const WEBSOCKET_URL = "localhost:8787"
 let websocket: WebSocket;
 
 type Message = {
@@ -15,7 +15,6 @@ type Message = {
 function App() {
 	const [user, setUser] = useState("");
 	const [room, setRoom] = useState("");
-	// const [websocket, setWebsocket] = useState(undefined as undefined | WebSocket);
 	const [messages, setMessages] = useState([] as Message[]);
 	const [participants, setParticipants] = useState([] as string[])
 	const [msgCount, setMsgCount] = useState(0);
@@ -26,7 +25,7 @@ function App() {
 		}
 		websocket = new WebSocket(`wss://${WEBSOCKET_URL}/api/room/${room}/websocket`);
 		if (websocket) {
-			websocket.onopen = () => websocket.send(JSON.stringify({ user: user, joined: room }));
+			websocket.onopen = () => websocket && websocket.send(JSON.stringify({ user: user, joined: room }));
 			// initially announce { user: User, joined: Room } to websocket
 			setMsgCount(msgCount + 1);
 		}
@@ -39,31 +38,29 @@ function App() {
 		}
 	};
 
-	useEffect(() => {
-		if (websocket) {
-			websocket.onmessage = msg => {
-				console.log(msg.data);
-				setMsgCount(msgCount + 1);
-				const msgData = JSON.parse(msg.data);
-				// msgData is of form {joined:user} or {quit:user} or {name:user, message:msg, timestamp:time}
-				if (msgData.joined) {
-					setParticipants(participants.concat(msgData.joined));
-				} else if (msgData.quit) {
-					setParticipants(participants.filter(user => user !== msgData.quit));
-				} else if (msgData.ready) {
-					return;
-				} else {
-					setMessages(
-						messages.concat({
-							author: msgData.name,
-							message: msgData.message,
-							timestamp: new Date(msgData.timestamp).toString(),
-						}),
-					);
-				}
-			};
-		}
-	});
+	if (websocket) {
+		websocket.onmessage = msg => {
+			console.log(msg.data);
+			setMsgCount(msgCount + 1);
+			const msgData = JSON.parse(msg.data);
+			// msgData is of form {joined:user} or {quit:user} or {name:user, message:msg, timestamp:time}
+			if (msgData.joined) {
+				setParticipants(participants => [...participants, msgData.joined]);
+			} else if (msgData.quit) {
+				setParticipants(participants => participants.filter(user => user !== msgData.quit));
+			} else if (msgData.ready) {
+				return;
+			} else {
+				setMessages(messages =>
+					[...messages,
+					{
+						author: msgData.name,
+						message: msgData.message,
+						timestamp: new Date(msgData.timestamp).toString(),
+					}]);
+			}
+		};
+	}
 
 	return (
 		<main>

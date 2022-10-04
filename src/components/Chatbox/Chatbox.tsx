@@ -80,7 +80,6 @@ const Chatbox = ({ user, participants, messages, sendToSocket, msgCount }: Chatb
 						name="messageinput"
 						placeholder="Type something..."
 						ref={composeBoxRef}
-						// value={draft}
 						onBlur={e => setDraft(e.target.value)}></textarea>
 					<button onClick={() => sendMessage()}>Send</button>
 				</div>
