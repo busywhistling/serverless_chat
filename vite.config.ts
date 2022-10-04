@@ -5,4 +5,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [react(), tsconfigPaths()],
+	base: "https://paramjit.org/serverless_chat/",
+	test: {
+		include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+		exclude: ["tests/**", "tests-examples/**"], // exclude playwright tests
+	},
 });
